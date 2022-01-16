@@ -1,0 +1,27 @@
+trigger: none 
+pool: terraform 
+steps: 
+- task: TerraforrmCLI@0 
+  inputs: 
+    command: 'init' 
+    workingDirectory: '$(System.DefaultWorkingDirectory)/dir'
+    backendType: 'azurerm' 
+    backendServiceArm: 'service-connection-name' 
+    backendAzureRmResourceGroupName: 'nprd-rg'
+    backendAzureRmStorageAccountName:  'tfstatedev' 
+    backendAzureRmContainerName: 'container' 
+    backendAzureRmKey: 'x.tfstate'
+    allowTelemetryCollection: 
+
+- task: TerraforrmCLI@0 
+  inputs: 
+    command: 'validate'
+    workingDirectory : '$(System DefaultWorkingDirectory)/dir' 
+    allowTelemetryCollection: true 
+
+- task: TerraformCLI@0 
+  inputs : 
+    command:  'apply' 
+    workingDirectory: '$(System.DefaultWorkingDirectory)/dir'
+    environrnentServiceName: 'service-connection-name' 
+    allowTelemetryCollection : true 
